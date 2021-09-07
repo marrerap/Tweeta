@@ -8,7 +8,7 @@ router.get("/", async function (req, res, next) {
   const tweets = await db.Tweet.findAll({
     include: [{
       model: db.User,
-      attributes: [username]
+      attributes: ["username"]
     }]
   });
   // send them to front end

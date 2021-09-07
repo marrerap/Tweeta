@@ -4,7 +4,7 @@ const db = require("../models");
 const bcrypt = require("bcrypt");
 
 //  Register new User---------------------------------------------------
-router.post("/", function (req, res, next) {
+router.post("/register", function (req, res, next) {
   //  take username, password
   if (!req.body || !req.body.username || !req.body.password) {
     res.status(422).json({
