@@ -3,7 +3,7 @@ var router = express.Router();
 const db = require("../models");
 const bcrypt = require("bcrypt");
 
-//  Register new User
+//  Register new User---------------------------------------------------
 router.post("/", function (req, res, next) {
   //  take username, password
   if (!req.body || !req.body.username || !req.body.password) {
@@ -40,5 +40,44 @@ router.post("/", function (req, res, next) {
 
   // respond with success/error
 });
+
+// logging in the user--------------------------------------------------
+router.post('/login', async (req, res) => {
+  // check if username and password are entered
+  if (!req.body.username || !req.body.password) {
+    res.status(422).json({
+      error: "Must Include username and password",
+    });
+    return
+  }
+  // find user by username----------------------------------------------
+  const user = await db.User.findOne({
+    where: {
+      username: req.body.username
+    }    
+  })
+  if (!user) {
+    res.status(400).json({
+      error: "Could not find user with that username"
+    })
+    return
+  }
+  // check password-----------------------------------------------------
+  const success = await bcrypt.compare(req.body.password, user.password)
+
+  if (!success) {
+    res.status(401).json({
+      error: 'Incorrect password'
+    })
+  }
+  // login the user-----------------------------------------------------
+  req.session.user = user
+
+
+  // respond with success-----------------------------------------------
+  res.json({
+    success: 'You have successfully logged in'
+  })
+})
 
 module.exports = router;
