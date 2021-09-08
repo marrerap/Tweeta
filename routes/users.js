@@ -72,11 +72,13 @@ router.post('/login', async (req, res) => {
   }
   // login the user-----------------------------------------------------
   req.session.user = user
-
+  // extract password from user user, assign all other properties to the userData variable
+  const { password, ...userData } = user.dataValues
 
   // respond with success-----------------------------------------------
   res.json({
-    success: 'You have successfully logged in'
+    success: 'You have successfully logged in',
+    user: userData
   })
 })
 

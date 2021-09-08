@@ -1,11 +1,14 @@
 import React, { useState } from 'react'
+import { useDispatch } from 'react-redux'
 import {  useHistory } from 'react-router'
+import { actionLoggedOIn } from '../redux/actions/user'
 
 function Login() {
     const [ username, setUsername] = useState('')
     const [ password, setPassword] = useState('')
     const [  error, setError ] = useState('')
     const history = useHistory()
+    const dispatch = useDispatch()
 
     
     const handleSubmit = (e) => {
@@ -26,7 +29,8 @@ function Login() {
             if(data.error) {
                 setError(data.error)
             }else {
-                history.push('/login')
+                dispatch(actionLoggedOIn(data.user))
+                history.push('/')
             }
         })
 
@@ -34,7 +38,7 @@ function Login() {
 
     return (
         <div>
-            {error ? error : ''}
+            { error && (<div className="error">{error}</div>) }
             <form onSubmit={handleSubmit} >
                 <label>
                     <input value={username} onChange={(e) => setUsername(e.target.value)}  />
@@ -44,7 +48,7 @@ function Login() {
                     <input value={password} onChange={(e) => setPassword(e.target.value)}  />
                 </label>
                 <br/>
-                <button type='submit' >Login</button>
+                <button type='submit' >Login </button>
 
             </form>
         </div>

@@ -9,7 +9,7 @@ function Register() {
     const [  error, setError ] = useState('')
     const history = useHistory()
 
-    
+
     const handleSubmit = (e) => {
         e.preventDefault()
         fetch('api/v1/users/register', {
@@ -36,7 +36,8 @@ function Register() {
 
     return (
         <div>
-            {error ? error : ''}
+           { error && (<div className="error">{error}</div>) }
+
             <form onSubmit={handleSubmit} >
                 <label>
                     <input value={username} onChange={(e) => setUsername(e.target.value)}  />
