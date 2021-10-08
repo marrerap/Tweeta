@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from 'react'
+import { useSelector } from 'react-redux'
 
 function Dashboard() {
 const [ tweets, setTweets] = useState([])
+const { user, checked } = useSelector(state => state.user)
+
 
 
     useEffect(() => {
@@ -13,8 +16,15 @@ const [ tweets, setTweets] = useState([])
         })
     }, [])
 
+if(!checked) {
+    return 'loading...'
+}
     return (
+       
         <div>
+             {user && (
+                 <div>Form</div>
+             )}
            Dashboard!!!
            {tweets.map((tweet, index) => {
                return(

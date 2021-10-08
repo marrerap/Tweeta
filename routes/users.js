@@ -82,4 +82,28 @@ router.post('/login', async (req, res) => {
   })
 })
 
+// logout
+router.get('/logout', (req,res) =>{
+  req.session.user = null
+  res.json({
+    success: 'user logged out'
+  })
+})
+
+// current user
+router.get('/current', async (req, res) => {
+  const user = await db.User.findByPk(req.session.user.id)
+  if(!user) {
+    res.status(404).json({
+      error: 'not logged in'
+    })    
+  }
+  const { password, ...userData } = user.dataValues
+
+  res.json(userData)
+
+})
+
+
+
 module.exports = router;
